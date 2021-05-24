@@ -184,14 +184,18 @@ public class FeedService {
                         String isFromRSSHub){
         try{
             int user_id = accountRepository.findByUserName(user_name).getId();
-            int source_id = -1;
+            Integer source_id;
             source_id = feedRepository.findSource(channel_name);
-            if(source_id==-1){
+            if(source_id==null){
                 feedRepository.addSource(channel_name,type_id);
                 source_id = feedRepository.findSource(channel_name);
             }
             int isRSSHub = isFromRSSHub.equals("true")?1:0;
-            feedRepository.addFeed(source_id,feed_url,feed_name,isRSSHub);
+            long current_time = System.currentTimeMillis();
+            long update_time = current_time-601000;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String format_time = sdf.format(update_time);
+            feedRepository.addFeed(source_id,feed_url,feed_name,isRSSHub,format_time);
             int feed_id = feedRepository.getIdByFeedUrl(feed_url);
             feedRepository.addAccountFeed(feed_id,user_id);
         }catch (Exception e){

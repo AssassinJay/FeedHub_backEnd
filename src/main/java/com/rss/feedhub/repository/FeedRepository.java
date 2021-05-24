@@ -79,12 +79,12 @@ public interface FeedRepository extends JpaRepository<FeedEntity,Integer> {
     int addSource(String souce_name,int type_id);
 
     @Query(value = "select id from source where souce_name = ?1",nativeQuery = true)
-    int findSource(String source_name);
+    Integer findSource(String source_name);
 
     @Transactional
     @Modifying
-    @Query(value = "insert into feeds(source_id, feed_url, feed_name, isRSSHub) values (?1,?2,?3,?4) ",nativeQuery = true)
-    int addFeed(int source_id,String feed_url,String feed_name, int isRSSHub);
+    @Query(value = "insert into feeds(source_id, feed_url, feed_name, isRSSHub, update_time) values (?1,?2,?3,?4,?5) ",nativeQuery = true)
+    int addFeed(int source_id,String feed_url,String feed_name, int isRSSHub,String update_time);
 
     @Transactional
     @Modifying
@@ -115,4 +115,9 @@ public interface FeedRepository extends JpaRepository<FeedEntity,Integer> {
 
     @Query(value = "select feed_name from feeds where id = ?1",nativeQuery = true)
     String getFeedNameById(int id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update feeds set update_time = ?1",nativeQuery = true)
+    int updateFeedUpdateTime(String update_time);
 }

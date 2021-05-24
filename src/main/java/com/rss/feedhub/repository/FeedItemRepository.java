@@ -32,4 +32,12 @@ public interface FeedItemRepository extends JpaRepository<ItemsEntity,Integer> {
 
     @Query(value = "SELECT * FROM items where original_link = ?1",nativeQuery = true)
     List<ItemsEntity> getItemsEntityByOriginalLink(String link);
+
+    @Transactional
+    @Modifying
+    @Query(value = "truncate table items",nativeQuery = true)
+    int truncateCacheTable();
+
+    @Query(value = "select DISTINCT feed_id from items ",nativeQuery = true)
+    List<Integer> getCacheFeedId();
 }
