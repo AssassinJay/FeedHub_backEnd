@@ -184,6 +184,7 @@ public class FeedService {
                         String isFromRSSHub){
         try{
             int user_id = accountRepository.findByUserName(user_name).getId();
+            
             Integer source_id;
             source_id = feedRepository.findSource(channel_name);
             if(source_id==null){
